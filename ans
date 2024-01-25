@@ -1,0 +1,48 @@
+0-1 Knapsack
+
+public class Solution {
+    public int solve(int i,ArrayList<Integer> A, ArrayList<Integer> B,int c,int dp[][]){
+        if(i==0 || c==0){
+            return 0;
+        }
+        if(dp[i][c]!=-1 ){return dp[i][c];}
+        if(B.get(i-1)<=c){
+          int pick = A.get(i-1)+solve(i-1,A,B,c-B.get(i-1),dp);  
+          int NotPick = solve(i-1,A,B,c,dp); 
+            dp[i][c] = Math.max(pick,NotPick);
+        }else{
+            dp[i][c] = solve(i-1,A,B,c,dp);
+        }
+        return dp[i][c];
+    }
+    public int solve(ArrayList<Integer> A, ArrayList<Integer> B, int C) {
+        int i = A.size();
+        
+        int dp[][] = new int[i+1][C+1];
+        // for(int row[] : dp){
+        //    Arrays.fill(row,-1);
+        // }
+        
+        for(int j=0;j<i;j++){
+            dp[j][0]=0;
+        }
+        for(int k=0;k<C;k++){
+            dp[0][k]=0;
+        }
+        
+        for(int a=1;a<=i;a++){
+            for(int b=1;b<=C;b++){
+               
+                if(B.get(a-1)<=b){
+                   int pick = A.get(a-1)+dp[a-1][b-B.get(a-1)];
+                   int notPick = dp[a-1][b];
+                    dp[a][b] = Math.max(pick,notPick);
+                 }else{
+                   dp[a][b]   =  dp[a-1][b];
+                 }
+        
+           } 
+        }
+         return dp[i][C];    
+    }
+}
